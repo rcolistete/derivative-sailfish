@@ -32,8 +32,17 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "pages"
 
-ApplicationWindow
-{
+
+ApplicationWindow {
+    property int orientation_index: 2
+    property bool showDerivative: true
+    property bool showTime: true
+    property bool numerApprox: false
+    property string numDigText: '15'
+    property int simplifyResult_index: 2
+    property int outputTypeResult_index: 1
+    property int derivativeScreenOrientation: Orientation.Portrait | Orientation.Landscape
+
     initialPage: Component { FirstPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
 }

@@ -13,10 +13,10 @@ Name:       Derivative
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Derivative
-Version:    0.6
-Release:    1
+Version:    0.7
+Release:    0
 Group:      Qt/Qt
-License:    LICENSE
+License:    LGPLv3
 URL:        http://www.robertocolistete.net/derivative/
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  Derivative.yaml

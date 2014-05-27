@@ -27,7 +27,8 @@ OTHER_FILES += qml/Derivative.qml \
     qml/pages/HelpPage.qml \
     qml/pages/derivative.py \
     qml/pages/DejaVuSansMono.ttf \
-    rpm/Derivative.changes
+    rpm/Derivative.changes \
+    qml/pages/SettingsPage.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

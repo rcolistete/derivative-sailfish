@@ -11,12 +11,17 @@ timet1=time.time()
 from sympy import *
 from sympy import __version__
 from sympy.interactive.printing import init_printing
-from sympy.printing.mathml import mathml
+from sympy.printing.mathml import print_mathml
 timet2=time.time()
 loadingtimeSymPy = timet2-timet1
 
 versionPython = python_version()
 versionSymPy = __version__
+
+simplifyType = {'none':0, 'expandterms':1, 'simplifyterms':2, 'expandall':3, \
+                'simplifyall':4}
+outputType = {'simple':0, 'bidimensional':1, 'latex':2, 'c':3, \
+              'fortran':4, 'javascript':5, 'python':6}
 
 nonCalculatedDerivative = ""
 nonCalculatedDerivativeOutput = ""
@@ -28,16 +33,28 @@ derivativeErrorMessage = 'Error: derivative not calculated'
 
 numerApprox = False
 
+def mapexpr(expr,func):
+    if isinstance(expr,Add):
+        return Add(*map(func,expr.args))
+    else:
+        return func(expr)
+
 def fixUnicodeText(text):
     text = text.replace(u"⎽","_")
     text = text.replace(u"ℯ","e")
     text = text.replace(u"ⅈ","i")
     return text
 
-def calculate_Derivative(expression,var1,numvar1,var2,numvar2,var3,numvar3):
-    global nonCalculatedDerivative, nonCalculatedDerivativeOutput, resultDerivative, resultDerivativeSimp, resultOutput, timeDerivative
+def calculate_Derivative(expression,var1,numvar1,var2,numvar2,var3,numvar3,\
+                         flagPortrait,showDerivative,showTime,numerApprox,numDigText,\
+                         simplifyResult,outputResult):
+    global nonCalculatedDerivative, nonCalculatedDerivativeOutput, resultDerivative, \
+           resultDerivativeSimp, resultOutput, timeDerivative
 
-    init_printing(use_unicode=True, num_columns=35)
+    if flagPortrait:
+        init_printing(use_unicode=True, num_columns=35)
+    else:
+        init_printing(use_unicode=True, num_columns=60)
     timet1=time.time()
 
     expressionDerivative = expression
@@ -68,30 +85,64 @@ def calculate_Derivative(expression,var1,numvar1,var2,numvar2,var3,numvar3):
         nonCalculatedDerivative = 'Derivative'+derivativeExpr
     try:
         if numerApprox:
-            resultDerivative = sympify('N(diff'+derivativeExpr+','+unicode(str(self.numDig))+')')
+            resultDerivative = sympify('N(diff'+derivativeExpr+','+numDigText+')')
         else:
             resultDerivative = sympify('diff'+derivativeExpr)
     except:
         resultDerivative = derivativeErrorMessage
 
-    resultDerivativeSimp = sympify(simplify(resultDerivative))
+    if (resultDerivative) and (type(resultDerivative) != str):
+        if (simplifyResult == simplifyType['none']) or (numerApprox):
+            resultDerivativeSimp = sympify(resultDerivative)
+        elif simplifyResult == simplifyType['expandterms']:
+            resultDerivativeSimp = sympify(mapexpr(resultDerivative,expand))
+        elif simplifyResult == simplifyType['simplifyterms']:
+            resultDerivativeSimp = sympify(mapexpr(resultDerivative,simplify))
+        elif simplifyResult == simplifyType['expandall']:
+            resultDerivativeSimp = sympify(expand(resultDerivative))
+        elif simplifyResult == simplifyType['simplifyall']:
+            resultDerivativeSimp = sympify(simplify(resultDerivative))
+    else:
+        resultDerivativeSimp = resultDerivative
 
     timet2=time.time()
     timeDerivative = timet2-timet1
 
-    nonCalculatedDerivativeOutput = nonCalculatedDerivative
-    resultOutput = resultDerivativeSimp
+    nonCalculatedDerivativeOutput = str(nonCalculatedDerivative)
+    resultOutput = str(resultDerivativeSimp)
+    if outputResult == outputType['bidimensional']:
+        if (type(nonCalculatedDerivative) != str):
+            nonCalculatedDerivativeOutput = fixUnicodeText(printing.pretty(nonCalculatedDerivative))
+        if (type(resultDerivativeSimp) != str):
+            resultOutput = fixUnicodeText(printing.pretty(resultDerivativeSimp))
+    elif outputResult == outputType['latex']:
+        if (type(nonCalculatedDerivative) != str):
+            nonCalculatedDerivativeOutput = latex(nonCalculatedDerivative)
+        if (type(resultDerivativeSimp) != str):
+            resultOutput = latex(resultDerivativeSimp)
+#    elif outputResult == outputType['mathml']:
+#        if (type(nonCalculatedDerivative) != str):
+#            nonCalculatedDerivativeOutput = str(mathml(nonCalculatedDerivative))
+#        if (type(resultDerivativeSimp) != str):
+#            resultOutput = str(print_mathml(resultDerivativeSimp))
+    elif outputResult == outputType['c']:
+        if (type(resultDerivativeSimp) != str):
+            resultOutput = ccode(resultDerivativeSimp)
+    elif outputResult == outputType['fortran']:
+        if (type(resultDerivativeSimp) != str):
+            resultOutput = fcode(resultDerivativeSimp)
+    elif outputResult == outputType['javascript']:
+        if (type(resultDerivativeSimp) != str):
+            resultOutput = jscode(resultDerivativeSimp)
+    elif outputResult == outputType['python']:
+        if (type(resultDerivativeSimp) != str):
+            resultOutput = python(resultDerivativeSimp)
 
-    if (type(nonCalculatedDerivative) != str):
-        nonCalculatedDerivativeOutput = fixUnicodeText(printing.pretty(nonCalculatedDerivative))
-    if (type(resultDerivativeSimp) != str):
-        resultOutput = fixUnicodeText(printing.pretty(resultDerivativeSimp))
-
-    if (timeDerivative > 0.0):
+    if showTime and (timeDerivative > 0.0):
         result = '<FONT COLOR="LightGreen">'+("Calculated after %f s :" % timeDerivative)+'</FONT><br>'
     else:
         result = u""
-    if nonCalculatedDerivativeOutput:
+    if showDerivative and nonCalculatedDerivativeOutput:
         result += u'<FONT COLOR="LightBlue">'+(nonCalculatedDerivativeOutput.replace(' ','&nbsp;')).replace("\n","<br>")+'<br>=</FONT><br>'
     if (type(resultDerivativeSimp) != str):
         result += (resultOutput.replace(' ','&nbsp;')).replace("\n","<br>")

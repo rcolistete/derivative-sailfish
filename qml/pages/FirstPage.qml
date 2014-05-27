@@ -34,14 +34,16 @@ import Sailfish.Silica.theme 1.0
 import io.thp.pyotherside 1.2
 
 Page {
-    id: page
+    id: firstPage
+
+    allowedOrientations: derivativeScreenOrientation
 
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaFlickable {
         id: container
         anchors.fill: parent
         contentHeight: contentItem.childrenRect.height
-        contentWidth: page.width
+        contentWidth: firstPage.width
 
         VerticalScrollDecorator { flickable: container }
 
@@ -55,23 +57,22 @@ Page {
                 text: "Help"
                 onClicked: pageStack.push(Qt.resolvedUrl("HelpPage.qml"))
             }
-/*            MenuItem {
+            MenuItem {
                 text: "Settings"
                 onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
             }
-*/
         }
 
         // Place our content in a Column.  The PageHeader is always placed at the top
         // of the page, followed by our content.
         Column {
             id : derivative_Column
-            width: page.width
+            width: firstPage.width
             spacing: Theme.paddingSmall
 
             function calculateResultDerivative() {
                 result_TextArea.text = '<FONT COLOR="LightGreen">Calculating derivative...</FONT>'
-                py.call('derivative.calculate_Derivative', [expression_TextField.text,var1_TextField.text,numVar1_TextField.text,var2_TextField.text,numVar2_TextField.text,var3_TextField.text,numVar3_TextField.text,], function(result) {
+                py.call('derivative.calculate_Derivative', [expression_TextField.text,var1_TextField.text,numVar1_TextField.text,var2_TextField.text,numVar2_TextField.text,var3_TextField.text,numVar3_TextField.text,orientation!==Orientation.Landscape,showDerivative,showTime,numerApprox,numDigText,simplifyResult_index,outputTypeResult_index], function(result) {
                     result_TextArea.text = result;
                     result_TextArea.selectAll()
                     result_TextArea.copy()
@@ -85,10 +86,10 @@ Page {
             TextField {
                 id: expression_TextField
                 width: parent.width
+                inputMethodHints: Qt.ImhNoAutoUppercase
                 label: qsTr("Expression")
                 placeholderText: "sqrt(x/(x**3+1))"
                 text: "sqrt(x/(x**3+1))"
-                focus: true
                 EnterKey.enabled: text.length > 0
                 EnterKey.iconSource: "image://theme/icon-m-enter-next"
                 EnterKey.onClicked: var1_TextField.focus = true
@@ -102,7 +103,8 @@ Page {
                 TextField {
                    id: var1_TextField
                    width: parent.width*0.20
-                   label: "Var.1"
+                   inputMethodHints: Qt.ImhNoAutoUppercase
+                   label: qsTr("Var.1")
                    placeholderText: "x"
                    text: "x"
                    EnterKey.enabled: text.length > 0
@@ -112,6 +114,8 @@ Page {
                 TextField {
                    id: numVar1_TextField
                    width: parent.width*0.13
+                   inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhDigitsOnly
+                   validator: IntValidator { bottom: 0; top: 9999 }
                    label: "#"
                    placeholderText: "1"
                    text: "1"
@@ -122,7 +126,8 @@ Page {
                 TextField {
                    id: var2_TextField
                    width: parent.width*0.20
-                   label: "Var.2"
+                   inputMethodHints: Qt.ImhNoAutoUppercase
+                   label: qsTr("Var.2")
                    placeholderText: "y"
                    text: "y"
                    EnterKey.enabled: text.length > 0
@@ -132,6 +137,8 @@ Page {
                 TextField {
                    id: numVar2_TextField
                    width: parent.width*0.13
+                   inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhDigitsOnly
+                   validator: IntValidator { bottom: 0; top: 9999 }
                    label: "#"
                    placeholderText: "0"
                    text: "0"
@@ -142,7 +149,8 @@ Page {
                 TextField {
                    id: var3_TextField
                    width: parent.width*0.20
-                   label: "Var.3"
+                   inputMethodHints: Qt.ImhNoAutoUppercase
+                   label: qsTr("Var.3")
                    placeholderText: "z"
                    text: "z"
                    EnterKey.enabled: text.length > 0
@@ -152,6 +160,8 @@ Page {
                 TextField {
                    id: numVar3_TextField
                    width: parent.width*0.13
+                   inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhDigitsOnly
+                   validator: IntValidator { bottom: 0; top: 9999 }
                    label: "#"
                    placeholderText: "0"
                    text: "0"
@@ -165,6 +175,7 @@ Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width*0.60
                 text: qsTr("Calculate")
+                focus: true
                 onClicked: derivative_Column.calculateResultDerivative()
             }
             Separator {
@@ -176,7 +187,7 @@ Page {
             FontLoader { id: dejavusansmono; source: "file:DejaVuSansMono.ttf" }
             TextArea {
                 id: result_TextArea
-                height: Math.max(page.width, 600, implicitHeight)
+                height: Math.max(firstPage.width, 600, implicitHeight)
                 width: parent.width
                 readOnly: true
                 font.family: dejavusansmono.name

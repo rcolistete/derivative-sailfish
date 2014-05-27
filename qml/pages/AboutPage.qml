@@ -4,20 +4,34 @@ import Sailfish.Silica.theme 1.0
 
 
 Page {
-    id: page
+    id: aboutPage
+
+    allowedOrientations: derivativeScreenOrientation
 
      Item {
         id: aboutInfos
-        property string version:'0.6'
-        property string text:'<style>a:link { color: ' + Theme.primaryColor  + '; }</style>' +
-                             '<p align="justify">Derivative calculates mathematical derivatives symbolically (in future versions, also numerical ones, as well derivative operators like gradient, divergence, curl and Laplacian).</p>' +
-                             '<p align="justify">This version of Derivative is written using Python, SymPy, PyOtherSide, Qt5, Qt Quick 2 (Silica Components).</p>' +
-                             '<center><br>© 2011-2014 by Roberto Colistete Jr.</center>' +
-                             '<center>Free & Open Source :</center>' +
-                             '<center><a href="http://www.gnu.org/licenses/lgpl-3.0.html"><b>License LGPLv3</b></a></center>' +
-                             '<center><br>For more information, see the web site :</center>' +
-                             '<center><a href="http://www.RobertoColistete.net/Derivative"><b>www.RobertoColistete.net/Derivative</b></a></center>' +
-                             '<center><br><FONT COLOR="violet">In l&hearts;ving memory of my wife Lorena</FONT></center>'
+        property string version:'0.7'
+        property string text: if(orientation === Orientation.Portrait) {
+                                  '<style>a:link { color: ' + Theme.primaryColor  + '; }</style>' +
+                                  'Derivative calculates mathematical<br>derivatives symbolically and numerically<br>(in next versions, also vector derivatives like<br>gradient, divergence, curl and Laplacian).' +
+                                  '<br><br>This version of Derivative is written using<br>Python 3, SymPy, PyOtherSide, Qt5,<br>Qt Quick 2 (Silica Components).' +
+                                  '<br><br>© 2011-2014 by Roberto Colistete Jr.' +
+                                  '<br>Free & Open Source :' +
+                                  '<br><a href="http://www.gnu.org/licenses/lgpl-3.0.html"><b>License LGPLv3</b></a>' +
+                                  '<br><br>For more information, see the web site :' +
+                                  '<br><a href="http://www.RobertoColistete.net/Derivative"><b>www.RobertoColistete.net/Derivative</b></a>' +
+                                  '<br><br><FONT COLOR="violet">In l&hearts;ving memory of my wife Lorena</FONT>'
+                               } else {
+                                  '<style>a:link { color: ' + Theme.primaryColor  + '; }</style>' +
+                                  'Derivative calculates mathematical derivatives symbolically<br>and numerically (in next versions, also vector derivatives<br>like gradient, divergence, curl and Laplacian).' +
+                                  '<br><br>This version of Derivative is written using Python 3, SymPy, <br>PyOtherSide, Qt5, Qt Quick 2 (Silica Components).' +
+                                  '<br><br>© 2011-2014 by Roberto Colistete Jr.' +
+                                  '<br>Free & Open Source :' +
+                                  '<br><a href="http://www.gnu.org/licenses/lgpl-3.0.html"><b>License LGPLv3</b></a>' +
+                                  '<br><br>For more information, see the web site :' +
+                                  '<br><a href="http://www.RobertoColistete.net/Derivative"><b>www.RobertoColistete.net/Derivative</b></a>' +
+                                  '<br><br><FONT COLOR="violet">In l&hearts;ving memory of my wife Lorena</FONT>'
+                              }
     }
 
     SilicaFlickable {
@@ -25,6 +39,8 @@ Page {
         anchors.fill: parent
         contentHeight: contentItem.childrenRect.height
         contentWidth: aboutFlick.width
+
+        VerticalScrollDecorator { flickable: aboutFlick }
 
         Column {
             id: aboutColumn
@@ -36,7 +52,7 @@ Page {
             spacing: Theme.paddingMedium
 
             PageHeader {
-                title: 'About Derivative'
+                title: qsTr('About Derivative')
             }
             Label {
                 id:title
@@ -47,7 +63,7 @@ Page {
             }
             Label {
                 id: slogan
-                text: 'for Sailfish OS'
+                text: qsTr('for Sailfish OS')
                 anchors.horizontalCenter: parent.horizontalCenter
             }
             Item {
@@ -58,7 +74,8 @@ Page {
                 id: content
                 text: aboutInfos.text
                 width: aboutFlick.width
-                wrapMode: TextEdit.WordWrap
+                // wrapMode: TextEdit.WordWrap
+                horizontalAlignment: Text.AlignHCenter;
                 font.pixelSize: Theme.fontSizeSmall
                 textFormat: Text.RichText
                 anchors {

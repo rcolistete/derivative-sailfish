@@ -8,8 +8,16 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Mon May 26 2014 Roberto Colistete Jr. <roberto.colistete@gmail.com> - 0.7.0
+- Derivative 0.7 (26/05/2014) for Sailfish :
+-  * disabled automatic upper case in virtual keyboard;
+-  * numeric filter in '#' input fields;
+-  * "Settings" menu implemented with many options : numerical approximation,
+     simplification method, output type, show calculation time, etc;
+-  * portrait and landscape modes
+
 * Thu May 22 2014 Roberto Colistete Jr. <roberto.colistete@gmail.com> - 0.6.1
 - Derivative 0.6 (22/05/2014) for Sailfish :
-- * first public release for Sailfish.
+-  * first public release for Sailfish.
 
 
