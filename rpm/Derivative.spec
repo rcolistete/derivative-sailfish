@@ -24,6 +24,9 @@ Requires:   mapplauncherd-booster-silica-qt5
 Requires:   python3-base
 Requires:   pyotherside-qml-plugin-python3-qt5 >= 1.2
 Requires:   python3-sympy
+
+BuildRequires:  python3-base
+BuildRequires:  python3-devel
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(qdeclarative5-boostable)
 BuildRequires:  pkgconfig(Qt5Core)
