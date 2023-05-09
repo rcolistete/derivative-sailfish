@@ -19,6 +19,9 @@ Group:      Qt/Qt
 License:    LGPLv3
 URL:        http://www.robertocolistete.net/derivative/
 Source0:    %{name}-%{version}.tar.bz2
+BuildArch:  noarch
+Requires:       libsailfishapp-launcher
+BuildRequires:  qt5-qttools-linguist
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   mapplauncherd-booster-silica-qt5
 Requires:   python3-base
