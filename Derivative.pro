@@ -12,9 +12,7 @@
 # The name of your application
 TARGET = Derivative
 
-CONFIG += sailfishapp
-
-SOURCES += src/Derivative.cpp
+CONFIG += sailfishapp_qml
 
 OTHER_FILES += qml/Derivative.qml \
     qml/cover/CoverPage.qml \

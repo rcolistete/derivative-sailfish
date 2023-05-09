@@ -5,3 +5,7 @@ Name=Derivative
 Icon=Derivative
 Exec=Derivative
 
+[X-Sailjail]
+Permissions=UserDirs
+OrganizationName=com.wordpress.robertocolistete
+ApplicationName=Derivative

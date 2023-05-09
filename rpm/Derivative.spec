@@ -19,7 +19,6 @@ Group:      Qt/Qt
 License:    LGPLv3
 URL:        http://www.robertocolistete.net/derivative/
 Source0:    %{name}-%{version}.tar.bz2
-Source100:  Derivative.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
 Requires:   mapplauncherd-booster-silica-qt5
 Requires:   python3-base
@@ -35,6 +34,16 @@ BuildRequires:  desktop-file-utils
 %description
 Derivative - Calculation of mathematical derivatives using Python & SymPy module
 
+%if "%{?vendor}" == "chum"
+PackageName: derivative
+Type: desktop-application
+Categories:
+ - Science
+ - Utility
+PackagerName: Mark Washeim (poetaster)
+Custom:
+ - Repo: https://github.com/poetaster/derivative-sailfish
+%endif
 
 %prep
 %setup -q -n %{name}-%{version}
