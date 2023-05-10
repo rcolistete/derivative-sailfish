@@ -14,7 +14,7 @@ Name:       Derivative
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Derivative
 Version:    0.8.0
-Release:    1
+Release:    2
 Group:      Qt/Qt
 License:    LGPLv3
 URL:        http://www.robertocolistete.net/derivative/
@@ -47,7 +47,7 @@ PackagedBy: Mark Washeim (poetaster)
 Custom:
  - Repo: https://github.com/rcolistete/derivative-sailfish
  - PackagingRepo: https://github.com/poetaster/derivative-sailfish
- - https://github.com/poetaster/derivative-sailfish/blob/c80a621e04bbf247139c393b5776eb717be0e206/Derivative.png
+PackageIcon: https://github.com/poetaster/derivative-sailfish/blob/c80a621e04bbf247139c393b5776eb717be0e206/Derivative.png
 %endif
 
 
