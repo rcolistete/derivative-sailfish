@@ -37,7 +37,7 @@ CoverBackground {
         anchors.centerIn: parent
         text: "Derivative"
     }
-
+/*
     CoverActionList {
         id: coverAction
 
@@ -51,6 +51,7 @@ CoverBackground {
             onTriggered: console.log("Stop")
         }
     }
+    */
 }
 
 
