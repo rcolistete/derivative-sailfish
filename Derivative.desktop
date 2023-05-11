@@ -3,7 +3,7 @@ Type=Application
 X-Nemo-Application-Type=silica-qt5
 Name=Derivative
 Icon=Derivative
-Exec=sailjail -p Derivative.desktop /usr/bin/sailfish-qml Derivative
+Exec=/usr/bin/sailfish-qml Derivative
 
 [X-Sailjail]
 Permissions=UserDirs

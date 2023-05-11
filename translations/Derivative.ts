@@ -38,6 +38,14 @@
         <source>Var.3</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Copy result</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy formula</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HelpPage</name>
