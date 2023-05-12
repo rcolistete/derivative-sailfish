@@ -3,5 +3,9 @@ Type=Application
 X-Nemo-Application-Type=silica-qt5
 Name=Derivative
 Icon=Derivative
-Exec=Derivative
+Exec=/usr/bin/sailfish-qml Derivative
 
+[X-Sailjail]
+Permissions=UserDirs
+OrganizationName=com.wordpress.robertocolistete
+ApplicationName=Derivative

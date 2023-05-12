@@ -139,7 +139,7 @@ def calculate_Derivative(expression,var1,numvar1,var2,numvar2,var3,numvar3,\
             resultOutput = python(resultDerivativeSimp)
 
     if showTime and (timeDerivative > 0.0):
-        result = '<FONT COLOR="LightGreen">'+("Calculated after %f s :" % timeDerivative)+'</FONT><br>'
+        result = '<FONT COLOR="LightGreen">'+("Calculated in %fs :" % timeDerivative)+'</FONT><br><br>'
     else:
         result = u""
     if showDerivative and nonCalculatedDerivativeOutput:

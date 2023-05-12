@@ -32,12 +32,22 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 CoverBackground {
-    Label {
-        id: label
+    FontLoader { id: dejavusansmono; source: "../pages/DejaVuSansMono.ttf" }
+    TextArea {
         anchors.centerIn: parent
-        text: "Derivative"
+        id: cover_TextArea
+        height: Math.max(parent.width, 400, implicitHeight)
+        width: parent.width
+        readOnly: true
+        font.family: dejavusansmono.name
+        color: Theme.highlightColor
+        font.pixelSize: Theme.fontSizeExtraSmallBase
+        text : resultText
+        Component.onCompleted: {
+            _editor.textFormat = Text.RichText;
+        }
     }
-
+/*
     CoverActionList {
         id: coverAction
 
@@ -51,6 +61,7 @@ CoverBackground {
             onTriggered: console.log("Stop")
         }
     }
+    */
 }
 
 

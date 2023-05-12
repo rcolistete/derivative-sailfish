@@ -30,7 +30,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Sailfish.Silica.theme 1.0
 import io.thp.pyotherside 1.2
 
 Page {
@@ -42,8 +41,8 @@ Page {
     SilicaFlickable {
         id: container
         anchors.fill: parent
-        contentHeight: contentItem.childrenRect.height
-        contentWidth: firstPage.width
+        //contentHeight: contentItem.childrenRect.height
+        width: parent.width
 
         VerticalScrollDecorator { flickable: container }
 
@@ -62,6 +61,16 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
             }
         }
+        PushUpMenu {
+            MenuItem {
+                text: qsTr("Copy result")
+                onClicked: Clipboard.text = result_TextArea.text
+            }
+            MenuItem {
+                text: qsTr("Copy formula")
+                onClicked: Clipboard.text = expression_TextField.text
+            }
+        }
 
         // Place our content in a Column.  The PageHeader is always placed at the top
         // of the page, followed by our content.
@@ -74,9 +83,9 @@ Page {
                 result_TextArea.text = '<FONT COLOR="LightGreen">Calculating derivative...</FONT>'
                 py.call('derivative.calculate_Derivative', [expression_TextField.text,var1_TextField.text,numVar1_TextField.text,var2_TextField.text,numVar2_TextField.text,var3_TextField.text,numVar3_TextField.text,orientation!==Orientation.Landscape,showDerivative,showTime,numerApprox,numDigText,simplifyResult_index,outputTypeResult_index], function(result) {
                     result_TextArea.text = result;
-                    result_TextArea.selectAll()
-                    result_TextArea.copy()
-                    result_TextArea.deselect()
+                    //result_TextArea.selectAll()
+                    //result_TextArea.copy()
+                    //result_TextArea.deselect()
                 })
             }
 
@@ -192,9 +201,19 @@ Page {
                 readOnly: true
                 font.family: dejavusansmono.name
                 font.pixelSize: Theme.fontSizeExtraSmall
-                text : '<FONT COLOR="LightGreen">All calculation results are copied to clipboard.<br>Loading Python and SymPy, it takes some seconds...</FONT>'
+                text : 'Loading Python and SymPy, it takes some seconds...'
                 Component.onCompleted: {
                     _editor.textFormat = Text.RichText;
+                }
+                /* for the cover we hold the value */
+                onTextChanged: { resultText = scaleText(text) }
+
+                /* for the cover we scale font px values */
+                function scaleText(text) {
+                    //console.log(text)
+                    const re0 = /36px/g;
+                    const newtxt = text.replace(re0, "16px")
+                    return newtxt
                 }
             }
 
