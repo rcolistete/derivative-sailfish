@@ -13,7 +13,7 @@ Name:       Derivative
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Derivative
-Version:    0.8.0
+Version:    0.8.2
 Release:    2
 Group:      Qt/Qt
 License:    LGPLv3

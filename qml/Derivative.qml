@@ -40,8 +40,10 @@ ApplicationWindow {
     property bool numerApprox: false
     property string numDigText: '15'
     property int simplifyResult_index: 2
+    property int numColumns:42
     property int outputTypeResult_index: 1
     property string resultText: ''
+    property string timerInfo: ''
     property int derivativeScreenOrientation: Orientation.Portrait | Orientation.Landscape
 
     initialPage: Component { FirstPage { } }

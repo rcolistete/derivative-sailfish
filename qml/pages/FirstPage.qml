@@ -42,6 +42,7 @@ Page {
         id: container
         anchors.fill: parent
         //contentHeight: contentItem.childrenRect.height
+        height: derivative_Column.height
         width: parent.width
 
         VerticalScrollDecorator { flickable: container }
@@ -77,11 +78,20 @@ Page {
         Column {
             id : derivative_Column
             width: firstPage.width
+            height: childrenRect.height
             spacing: Theme.paddingSmall
 
+
             function calculateResultDerivative() {
-                result_TextArea.text = '<FONT COLOR="LightGreen">Calculating derivative...</FONT>'
-                py.call('derivative.calculate_Derivative', [expression_TextField.text,var1_TextField.text,numVar1_TextField.text,var2_TextField.text,numVar2_TextField.text,var3_TextField.text,numVar3_TextField.text,orientation!==Orientation.Landscape,showDerivative,showTime,numerApprox,numDigText,simplifyResult_index,outputTypeResult_index], function(result) {
+                if (Orientation.Portrait) {
+                    numColumns=42      // Portrait
+                } else {
+                    numColumns=82      // Portrait
+
+                }
+
+                result_TextArea.text = 'Calculating ...'
+                py.call('derivative.calculate_Derivative', [expression_TextField.text,var1_TextField.text,numVar1_TextField.text,var2_TextField.text,numVar2_TextField.text,var3_TextField.text,numVar3_TextField.text,numColumns,showDerivative,showTime,numerApprox,numDigText,simplifyResult_index,outputTypeResult_index], function(result) {
                     result_TextArea.text = result;
                     //result_TextArea.selectAll()
                     //result_TextArea.copy()
@@ -194,26 +204,37 @@ Page {
                 color: Theme.primaryColor
             }
             FontLoader { id: dejavusansmono; source: "file:DejaVuSansMono.ttf" }
+
+            Label {
+               id:timer
+               anchors.horizontalCenter: parent.horizontalCenter
+               width: parent.width*0.50
+               text: timerInfo
+               color: Theme.highlightColor
+            }
+
             TextArea {
                 id: result_TextArea
-                height: Math.max(firstPage.width, 600, implicitHeight)
+                //height: Math.max(firstPage.width, 600, implicitHeight)
                 width: parent.width
                 readOnly: true
                 font.family: dejavusansmono.name
                 font.pixelSize: Theme.fontSizeExtraSmall
                 text : 'Loading Python and SymPy, it takes some seconds...'
+                color: 'lightblue'
                 Component.onCompleted: {
-                    _editor.textFormat = Text.RichText;
+                    //_editor.textFormat = Text.RichText;
                 }
                 /* for the cover we hold the value */
-                onTextChanged: { resultText = scaleText(text) }
-
+                onTextChanged: {
+                    resultText = scaleText(text)
+                }
                 /* for the cover we scale font px values */
+                /* on the cover we can use html */
                 function scaleText(text) {
-                    //console.log(text)
-                    const re0 = /36px/g;
-                    const newtxt = text.replace(re0, "16px")
-                    return newtxt
+                    const txt = '<FONT COLOR="lightblue" SIZE="10px"><pre>'
+                    txt = txt + text + '<pre></FONT>'
+                    return txt
                 }
             }
 
@@ -222,19 +243,31 @@ Page {
 
                 Component.onCompleted: {
                     // Add the Python library directory to the import path
+
+                    setHandler('timerPush', timerPushHandler);
+
                     var pythonpath = Qt.resolvedUrl('.').substr('file://'.length);
                     addImportPath(pythonpath);
-                    console.log(pythonpath);
+
+                    //console.log(pythonpath);
 
                     // Asynchronous module importing
                     importModule('derivative', function() {
+                        result_TextArea.text='Python version ' + evaluate('derivative.versionPython') + '.\n'
+                        result_TextArea.text+='SymPy version ' + evaluate('derivative.versionSymPy') + '\n'
+                        timerInfo = evaluate('("loaded in %fs" % derivative.loadingtimeSymPy)')
+                       /*
                         console.log('Python version: ' + evaluate('derivative.versionPython'));
                         result_TextArea.text+='<FONT COLOR="LightGreen">Using Python version ' + evaluate('derivative.versionPython') + '.</FONT>'
                         console.log('SymPy version ' + evaluate('derivative.versionSymPy') + evaluate('(" loaded in %f seconds." % derivative.loadingtimeSymPy)'));
                         result_TextArea.text+='<FONT COLOR="LightGreen">SymPy version ' + evaluate('derivative.versionSymPy') + evaluate('(" loaded in %f seconds." % derivative.loadingtimeSymPy)') + '</FONT><br>'
+                        */
                     });
                 }
-
+                // shared via timerInfo with cover
+                function timerPushHandler(pTimer) {
+                    timerInfo =  pTimer + ' elapsed'
+                }
                 onError: {
                     // when an exception is raised, this error handler will be called
                     console.log('python error: ' + traceback);

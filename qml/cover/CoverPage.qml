@@ -34,18 +34,34 @@ import Sailfish.Silica 1.0
 CoverBackground {
     FontLoader { id: dejavusansmono; source: "../pages/DejaVuSansMono.ttf" }
     TextArea {
-        anchors.centerIn: parent
         id: cover_TextArea
-        height: Math.max(parent.width, 400, implicitHeight)
+        anchors{
+            top:parent.top
+            left:parent.left
+        }
         width: parent.width
         readOnly: true
         font.family: dejavusansmono.name
-        color: Theme.highlightColor
-        font.pixelSize: Theme.fontSizeExtraSmallBase
+        color: 'lightblue'//Theme.highlightColor
+        font.pixelSize: Theme.fontSizeSmall / 2
         text : resultText
         Component.onCompleted: {
             _editor.textFormat = Text.RichText;
         }
+    }
+    Label {
+       id:timer
+        anchors{
+            top:cover_TextArea.bottom
+            margins: Theme.paddingLarge
+            horizontalCenter: parent.horizontalCenter
+
+        }
+
+       color: Theme.highlightColor
+       font.family: dejavusansmono.name
+       font.pixelSize: Theme.fontSizeExtraSmall
+       text: "Derivative"
     }
 /*
     CoverActionList {

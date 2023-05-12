@@ -46,15 +46,12 @@ def fixUnicodeText(text):
     return text
 
 def calculate_Derivative(expression,var1,numvar1,var2,numvar2,var3,numvar3,\
-                         flagPortrait,showDerivative,showTime,numerApprox,numDigText,\
+                         numColumns,showDerivative,showTime,numerApprox,numDigText,\
                          simplifyResult,outputResult):
     global nonCalculatedDerivative, nonCalculatedDerivativeOutput, resultDerivative, \
            resultDerivativeSimp, resultOutput, timeDerivative
 
-    if flagPortrait:
-        init_printing(use_unicode=True, num_columns=35)
-    else:
-        init_printing(use_unicode=True, num_columns=60)
+    init_printing(use_unicode=True, num_columns=numColumns)
     timet1=time.time()
 
     expressionDerivative = expression
@@ -139,14 +136,19 @@ def calculate_Derivative(expression,var1,numvar1,var2,numvar2,var3,numvar3,\
             resultOutput = python(resultDerivativeSimp)
 
     if showTime and (timeDerivative > 0.0):
-        result = '<FONT COLOR="LightGreen">'+("Calculated in %fs :" % timeDerivative)+'</FONT><br><br>'
+        pyotherside.send("timerPush", timeDerivative)
+        result = u'\n\n'
+        #result = '<FONT COLOR="LightGreen">'+("Calculated in %fs :" % timeDerivative)+'</FONT><br><br>'
     else:
-        result = u""
+        result = u"\n\n"
     if showDerivative and nonCalculatedDerivativeOutput:
-        result += u'<FONT COLOR="LightBlue">'+(nonCalculatedDerivativeOutput.replace(' ','&nbsp;')).replace("\n","<br>")+'<br>=</FONT><br>'
+        result+= nonCalculatedDerivativeOutput + '\n\n'
+        #result += u'<FONT COLOR="LightBlue">'+(nonCalculatedDerivativeOutput.replace(' ','&nbsp;')).replace("\n","<br>")+'<br>=</FONT><br>'
     if (type(resultDerivativeSimp) != str):
-        result += (resultOutput.replace(' ','&nbsp;')).replace("\n","<br>")
+        result+= resultOutput + '\n\n'
+        #result += (resultOutput.replace(' ','&nbsp;')).replace("\n","<br>")
     else:
-        result += u'<FONT COLOR="Red">'+((resultOutput.replace(' ','&nbsp;')).replace("\n","<br>"))+'</FONT>'
+        result+= resultOutput + '\n\n'
+        #result += u'<FONT COLOR="Red">'+((resultOutput.replace(' ','&nbsp;')).replace("\n","<br>"))+'</FONT>'
     return result
 
