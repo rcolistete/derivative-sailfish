@@ -7,6 +7,7 @@ Name:       Derivative
 
 # >> macros
 # << macros
+%define _binary_payload w2.xzdio
 
 %{!?qtc_qmake:%define qtc_qmake %qmake}
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
@@ -14,7 +15,7 @@ Name:       Derivative
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Derivative
 Version:    0.8.3
-Release:    1
+Release:    2
 Group:      Qt/Qt
 License:    LGPLv3
 URL:        http://www.robertocolistete.net/derivative/
